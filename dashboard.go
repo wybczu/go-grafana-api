@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/url"
 	"os"
 )
 
@@ -107,7 +108,9 @@ func (c *Client) NewDashboard(dashboard Dashboard) (*DashboardSaveResponse, erro
 
 func (c *Client) Dashboards() ([]DashboardSearchResponse, error) {
 	dashboards := make([]DashboardSearchResponse, 0)
-	req, err := c.newRequest("GET", "/api/search?query=", nil, nil)
+	query := url.Values{}
+	query.Add("query", "")
+	req, err := c.newRequest("GET", "/api/search", query, nil)
 	if err != nil {
 		return nil, err
 	}
