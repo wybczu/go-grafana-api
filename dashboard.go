@@ -24,6 +24,18 @@ type DashboardSaveResponse struct {
 	Version int64  `json:"version"`
 }
 
+type DashboardSearchResponse struct {
+	Id        uint     `json:"id"`
+	Uid       string   `json:"uid"`
+	Title     string   `json:"title"`
+	Uri       string   `json:"uri"`
+	Url       string   `json:"url"`
+	Slug      string   `json:"slug"`
+	Type      string   `json:"type"`
+	Tags      []string `json:"tags"`
+	IsStarred bool     `json:"isStarred"`
+}
+
 type Dashboard struct {
 	Meta      DashboardMeta          `json:"meta"`
 	Model     map[string]interface{} `json:"dashboard"`
@@ -91,6 +103,30 @@ func (c *Client) NewDashboard(dashboard Dashboard) (*DashboardSaveResponse, erro
 	result := &DashboardSaveResponse{}
 	err = json.Unmarshal(data, &result)
 	return result, err
+}
+
+func (c *Client) Dashboards() ([]DashboardSearchResponse, error) {
+	dashboards := make([]DashboardSearchResponse, 0)
+	req, err := c.newRequest("GET", "/api/search?query=", nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.Do(req)
+	if err != nil {
+		return dashboards, err
+	}
+	if resp.StatusCode != 200 {
+		return dashboards, errors.New(resp.Status)
+	}
+
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return dashboards, err
+	}
+
+	err = json.Unmarshal(data, &dashboards)
+	return dashboards, err
 }
 
 func (c *Client) Dashboard(slug string) (*Dashboard, error) {
