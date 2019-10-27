@@ -26,15 +26,19 @@ type DashboardSaveResponse struct {
 }
 
 type DashboardSearchResponse struct {
-	Id        uint     `json:"id"`
-	Uid       string   `json:"uid"`
-	Title     string   `json:"title"`
-	Uri       string   `json:"uri"`
-	Url       string   `json:"url"`
-	Slug      string   `json:"slug"`
-	Type      string   `json:"type"`
-	Tags      []string `json:"tags"`
-	IsStarred bool     `json:"isStarred"`
+	Id          uint     `json:"id"`
+	Uid         string   `json:"uid"`
+	Title       string   `json:"title"`
+	Uri         string   `json:"uri"`
+	Url         string   `json:"url"`
+	Slug        string   `json:"slug"`
+	Type        string   `json:"type"`
+	Tags        []string `json:"tags"`
+	IsStarred   bool     `json:"isStarred"`
+	FolderId    uint     `json:"folderId"`
+	folderUid   string   `json:"folderUid"`
+	folderTitle string   `json:"folderTitle"`
+	folderUrl   string   `json:"folderUrl"`
 }
 
 type Dashboard struct {
@@ -109,7 +113,8 @@ func (c *Client) NewDashboard(dashboard Dashboard) (*DashboardSaveResponse, erro
 func (c *Client) Dashboards() ([]DashboardSearchResponse, error) {
 	dashboards := make([]DashboardSearchResponse, 0)
 	query := url.Values{}
-	query.Add("query", "")
+	// search only dashboards
+	query.Add("type", "dash-db")
 	req, err := c.newRequest("GET", "/api/search", query, nil)
 	if err != nil {
 		return nil, err
