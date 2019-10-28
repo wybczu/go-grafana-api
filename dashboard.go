@@ -36,9 +36,9 @@ type DashboardSearchResponse struct {
 	Tags        []string `json:"tags"`
 	IsStarred   bool     `json:"isStarred"`
 	FolderId    uint     `json:"folderId"`
-	folderUid   string   `json:"folderUid"`
-	folderTitle string   `json:"folderTitle"`
-	folderUrl   string   `json:"folderUrl"`
+	FolderUid   string   `json:"folderUid"`
+	FolderTitle string   `json:"folderTitle"`
+	FolderUrl   string   `json:"folderUrl"`
 }
 
 type Dashboard struct {
