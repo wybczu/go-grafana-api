@@ -87,9 +87,9 @@ func (c *Client) NewFolder(title string) (Folder, error) {
 }
 
 func (c *Client) UpdateFolder(uid string, title string) error {
-	dataMap := map[string]string{
+	dataMap := map[string]interface{}{
 		"title":     title,
-		"overwrite": "true",
+		"overwrite": true,
 	}
 	data, err := json.Marshal(dataMap)
 	req, err := c.newRequest("PUT", fmt.Sprintf("/api/folders/%s", uid), nil, bytes.NewBuffer(data))
